@@ -1,0 +1,1613 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>StegoShield — Image Steganography</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     PROCESSING OVERLAY
+===================================================== -->
+
+<div id="processingOverlay" class="processing-overlay">
+
+    <div class="processing-window">
+
+        <div class="processing-top">
+
+            <div class="processing-brand">
+                <span class="processing-logo">S</span>
+
+                <div>
+                    <strong>StegoShield</strong>
+                    <small>SECURE PROCESSING</small>
+                </div>
+            </div>
+
+            <span class="processing-live">
+                <i></i> PROCESSING
+            </span>
+
+        </div>
+
+
+        <div class="processing-main">
+
+            <div class="scanner">
+
+                <div class="scanner-grid"></div>
+
+                <div class="scanner-line"></div>
+
+                <div class="scanner-icon">
+                    <span>⌁</span>
+                </div>
+
+            </div>
+
+
+            <h2 id="processingTitle">
+                Securing your image
+            </h2>
+
+            <p id="processingSubtitle">
+                Preparing secure processing...
+            </p>
+
+
+            <div class="progress-area">
+
+                <div class="progress-info">
+
+                    <span>PROCESSING</span>
+
+                    <strong id="progressText">
+                        0%
+                    </strong>
+
+                </div>
+
+                <div class="progress-track">
+
+                    <div id="processingProgress"
+                         class="progress-bar">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="processing-steps">
+
+                <div id="step1"
+                     class="processing-step active">
+
+                    <span class="step-check">✓</span>
+
+                    <div>
+                        <strong>Prepare</strong>
+                        <small>Loading image</small>
+                    </div>
+
+                </div>
+
+
+                <div id="step2"
+                     class="processing-step">
+
+                    <span class="step-check">✓</span>
+
+                    <div>
+                        <strong>Analyze</strong>
+                        <small>Reading pixels</small>
+                    </div>
+
+                </div>
+
+
+                <div id="step3"
+                     class="processing-step">
+
+                    <span class="step-check">✓</span>
+
+                    <div>
+                        <strong>Encode</strong>
+                        <small>Securing message</small>
+                    </div>
+
+                </div>
+
+
+                <div id="step4"
+                     class="processing-step">
+
+                    <span class="step-check">✓</span>
+
+                    <div>
+                        <strong>Finish</strong>
+                        <small>Generating output</small>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     BACKGROUND
+===================================================== -->
+
+<div class="site-background">
+
+    <div class="background-grid"></div>
+
+</div>
+
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<header class="navbar">
+
+    <div class="nav-inner">
+
+
+        <a class="brand" href="#">
+
+            <span class="brand-mark">
+                S
+            </span>
+
+            <span class="brand-name">
+                StegoShield
+            </span>
+
+        </a>
+
+
+        <div class="nav-right">
+
+            <span class="security-indicator">
+
+                <i></i>
+
+                System secure
+
+            </span>
+
+            <span class="nav-divider"></span>
+
+            <span class="nav-label">
+                ISS PROJECT
+            </span>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="container">
+
+
+    <!-- =================================================
+         HERO
+    ================================================= -->
+
+    <section class="hero">
+
+        <div class="eyebrow">
+
+            <span class="eyebrow-line"></span>
+
+            INFORMATION SYSTEM SECURITY
+
+            <span class="eyebrow-line"></span>
+
+        </div>
+
+
+        <h1 class="hero-title">
+
+            <span id="typingLine1"></span>
+
+            <span class="hero-title-accent">
+
+                <span id="typingLine2"></span>
+
+                <span class="typing-cursor"></span>
+
+            </span>
+
+        </h1>
+
+
+        <p class="hero-description">
+
+            Hide confidential information inside ordinary images
+            using <strong>LSB image steganography.</strong>
+
+            No account. No complicated setup.
+
+        </p>
+
+
+        <div class="hero-meta">
+
+            <span>
+                <b></b> Local processing
+            </span>
+
+            <span>
+                <b></b> PNG / JPG
+            </span>
+
+            <span>
+                <b></b> LSB encoding
+            </span>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         APPLICATION
+    ================================================= -->
+
+    <section class="workspace">
+
+
+        <!-- =================================================
+             HIDE MESSAGE
+        ================================================= -->
+
+        <article class="tool-card">
+
+            <div class="card-header">
+
+                <div class="card-heading">
+
+                    <span class="card-number">
+                        01
+                    </span>
+
+                    <div>
+
+                        <span class="card-kicker">
+                            ENCODE
+                        </span>
+
+                        <h2>
+                            Hide a message
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card-action-icon">
+                    ↑
+                </div>
+
+            </div>
+
+
+            <p class="card-description">
+
+                Embed a private message into an image
+                without visibly changing its appearance.
+
+            </p>
+
+
+            <form id="hideForm"
+                  action="/hide"
+                  method="POST"
+                  enctype="multipart/form-data">
+
+
+                <!-- IMAGE -->
+
+                <label class="field-label">
+                    SOURCE IMAGE
+                </label>
+
+
+                <div class="upload-box"
+                     id="hideUploadBox">
+
+                    <input type="file"
+                           name="image"
+                           id="hideImage"
+                           accept="image/png,image/jpeg"
+                           required>
+
+
+                    <div class="upload-content">
+
+                        <div class="upload-symbol">
+                            +
+                        </div>
+
+                        <strong id="hideFileName">
+                            Select an image
+                        </strong>
+
+                        <span id="hideFileInfo">
+                            PNG or JPG · Click to browse
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- MESSAGE -->
+
+                <label class="field-label message-label">
+                    SECRET MESSAGE
+                </label>
+
+
+                <div class="message-box">
+
+                    <textarea
+                        name="message"
+                        id="message"
+                        maxlength="5000"
+                        placeholder="Type the message you want to hide..."
+                        required
+                    ></textarea>
+
+
+                    <div class="message-footer">
+
+                        <span>
+                            Hidden inside image pixels
+                        </span>
+
+                        <span>
+                            <strong id="charCount">0</strong>
+                            / 5000
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <button class="main-button"
+                        type="submit">
+
+                    <span class="button-icon">
+                        →
+                    </span>
+
+                    <span>
+                        Hide message
+                    </span>
+
+                    <span class="button-arrow">
+                        ↗
+                    </span>
+
+                </button>
+
+            </form>
+
+        </article>
+
+
+
+        <!-- =================================================
+             EXTRACT MESSAGE
+        ================================================= -->
+
+        <article class="tool-card extract-card">
+
+            <div class="card-header">
+
+                <div class="card-heading">
+
+                    <span class="card-number green-number">
+                        02
+                    </span>
+
+                    <div>
+
+                        <span class="card-kicker green">
+                            DECODE
+                        </span>
+
+                        <h2>
+                            Extract a message
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card-action-icon green-icon">
+                    ↓
+                </div>
+
+            </div>
+
+
+            <p class="card-description">
+
+                Recover hidden information from a
+                previously encoded steganographic image.
+
+            </p>
+
+
+            <form id="extractForm">
+
+
+                <!-- IMAGE -->
+
+                <label class="field-label">
+                    STEGANOGRAPHIC IMAGE
+                </label>
+
+
+                <div class="upload-box green-upload-box"
+                     id="extractUploadBox">
+
+                    <input type="file"
+                           id="extractImage"
+                           accept="image/png"
+                           required>
+
+
+                    <div class="upload-content">
+
+                        <div class="upload-symbol green-symbol">
+                            +
+                        </div>
+
+                        <strong id="extractFileName">
+                            Select stego image
+                        </strong>
+
+                        <span id="extractFileInfo">
+                            PNG recommended · Click to browse
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- RESULT -->
+
+                <label class="field-label message-label">
+                    EXTRACTED MESSAGE
+                </label>
+
+
+                <div id="result"
+                     class="result-box">
+
+                    <div class="result-status">
+                        <span></span>
+                    </div>
+
+
+                    <div class="result-content">
+
+                        <strong>
+                            Waiting for image
+                        </strong>
+
+                        <p>
+                            The hidden message will appear
+                            here after extraction.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <button class="main-button green-button"
+                        type="submit">
+
+                    <span class="button-icon">
+                        ←
+                    </span>
+
+                    <span>
+                        Extract message
+                    </span>
+
+                    <span class="button-arrow">
+                        ↗
+                    </span>
+
+                </button>
+
+            </form>
+
+        </article>
+
+    </section>
+
+
+
+    <!-- =================================================
+         HOW IT WORKS
+    ================================================= -->
+
+    <section class="how-section">
+
+
+        <div class="section-heading">
+
+            <span>
+                THE PROCESS
+            </span>
+
+            <h2>
+                Simple by design.
+            </h2>
+
+        </div>
+
+
+        <div class="process-list">
+
+
+            <div class="process-item">
+
+                <span class="process-number">
+                    01
+                </span>
+
+                <div class="process-content">
+
+                    <h3>
+                        Choose an image
+                    </h3>
+
+                    <p>
+                        Select a normal PNG or JPG image
+                        from your device.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="process-item">
+
+                <span class="process-number">
+                    02
+                </span>
+
+                <div class="process-content">
+
+                    <h3>
+                        Add your message
+                    </h3>
+
+                    <p>
+                        Enter the information you want
+                        to keep hidden.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="process-item">
+
+                <span class="process-number">
+                    03
+                </span>
+
+                <div class="process-content">
+
+                    <h3>
+                        Encode
+                    </h3>
+
+                    <p>
+                        LSB steganography stores the message
+                        within the image pixels.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="process-item">
+
+                <span class="process-number">
+                    04
+                </span>
+
+                <div class="process-content">
+
+                    <h3>
+                        Extract when needed
+                    </h3>
+
+                    <p>
+                        Upload the encoded image to recover
+                        the hidden message.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         SECURITY NOTE
+    ================================================= -->
+
+    <section class="security-note">
+
+        <div class="security-note-mark">
+            ✓
+        </div>
+
+        <div>
+
+            <span>
+                SECURITY NOTE
+            </span>
+
+            <p>
+                StegoShield uses image steganography to conceal
+                information rather than visibly displaying it.
+            </p>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    <div class="footer-inner">
+
+        <span>
+            © 2026 StegoShield
+        </span>
+
+        <span class="footer-center">
+            Image Steganography · ISS
+        </span>
+
+        <span class="footer-tech">
+            Flask · Pillow · Python
+        </span>
+
+    </div>
+
+</footer>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+
+/* =====================================================
+   TYPEWRITER HERO
+===================================================== */
+
+const line1 =
+    document.getElementById("typingLine1");
+
+const line2 =
+    document.getElementById("typingLine2");
+
+
+const text1 =
+    "Hide your secrets";
+
+
+const text2 =
+    "in plain sight.";
+
+
+let index1 = 0;
+let index2 = 0;
+
+
+function typeFirstLine() {
+
+    if (index1 < text1.length) {
+
+        line1.textContent +=
+            text1.charAt(index1);
+
+        index1++;
+
+        setTimeout(
+            typeFirstLine,
+            55
+        );
+
+    } else {
+
+        setTimeout(
+            typeSecondLine,
+            180
+        );
+
+    }
+
+}
+
+
+function typeSecondLine() {
+
+    if (index2 < text2.length) {
+
+        line2.textContent +=
+            text2.charAt(index2);
+
+        index2++;
+
+        setTimeout(
+            typeSecondLine,
+            55
+        );
+
+    }
+
+}
+
+
+window.addEventListener(
+    "load",
+    () => {
+
+        setTimeout(
+            typeFirstLine,
+            350
+        );
+
+    }
+);
+
+
+
+/* =====================================================
+   PROCESSING ELEMENTS
+===================================================== */
+
+const overlay =
+    document.getElementById(
+        "processingOverlay"
+    );
+
+
+const progressBar =
+    document.getElementById(
+        "processingProgress"
+    );
+
+
+const progressText =
+    document.getElementById(
+        "progressText"
+    );
+
+
+const processingTitle =
+    document.getElementById(
+        "processingTitle"
+    );
+
+
+const processingSubtitle =
+    document.getElementById(
+        "processingSubtitle"
+    );
+
+
+
+/* =====================================================
+   RESET PROCESSING
+===================================================== */
+
+function resetProcessing() {
+
+    progressBar.style.width =
+        "0%";
+
+    progressText.textContent =
+        "0%";
+
+
+    document
+        .querySelectorAll(".processing-step")
+        .forEach(step => {
+
+            step.classList.remove(
+                "completed"
+            );
+
+        });
+
+
+    document
+        .getElementById("step1")
+        .classList.add("active");
+
+}
+
+
+
+/* =====================================================
+   START PROCESSING
+===================================================== */
+
+function startProcessing(type) {
+
+    resetProcessing();
+
+
+    overlay.classList.add("show");
+
+
+    document.body.classList.add(
+        "processing-active"
+    );
+
+
+    if (type === "hide") {
+
+        processingTitle.textContent =
+            "Securing your image";
+
+        processingSubtitle.textContent =
+            "Preparing message encoding...";
+
+    } else {
+
+        processingTitle.textContent =
+            "Analyzing your image";
+
+        processingSubtitle.textContent =
+            "Searching for hidden information...";
+
+    }
+
+
+    const messages =
+        type === "hide"
+
+        ? [
+            "Preparing image...",
+            "Reading pixel structure...",
+            "Encoding secret message...",
+            "Securing pixel data...",
+            "Generating secure image..."
+        ]
+
+        : [
+            "Loading image...",
+            "Scanning pixel structure...",
+            "Reading hidden data...",
+            "Decoding message...",
+            "Finalizing extraction..."
+        ];
+
+
+    let progress = 0;
+
+    let stage = 0;
+
+
+    const interval =
+        setInterval(() => {
+
+
+            progress +=
+                Math.floor(
+                    Math.random() * 5
+                ) + 3;
+
+
+            if (progress >= 95) {
+
+                progress = 95;
+
+            }
+
+
+            progressBar.style.width =
+                progress + "%";
+
+
+            progressText.textContent =
+                progress + "%";
+
+
+            if (
+                progress >= 20 &&
+                stage === 0
+            ) {
+
+                stage = 1;
+
+                completeStep(2);
+
+            }
+
+
+            if (
+                progress >= 45 &&
+                stage === 1
+            ) {
+
+                stage = 2;
+
+                completeStep(3);
+
+            }
+
+
+            if (
+                progress >= 70 &&
+                stage === 2
+            ) {
+
+                stage = 3;
+
+                completeStep(4);
+
+            }
+
+
+            processingSubtitle.textContent =
+                messages[
+                    Math.min(
+                        stage,
+                        messages.length - 1
+                    )
+                ];
+
+
+        }, 350);
+
+
+    return interval;
+
+}
+
+
+
+/* =====================================================
+   COMPLETE STEP
+===================================================== */
+
+function completeStep(number) {
+
+    for (
+        let i = 1;
+        i <= number;
+        i++
+    ) {
+
+        const step =
+            document.getElementById(
+                "step" + i
+            );
+
+
+        step.classList.add(
+            "completed"
+        );
+
+    }
+
+}
+
+
+
+/* =====================================================
+   FINISH PROCESSING
+===================================================== */
+
+function finishProcessing() {
+
+    progressBar.style.width =
+        "100%";
+
+    progressText.textContent =
+        "100%";
+
+
+    completeStep(4);
+
+}
+
+
+
+/* =====================================================
+   CLOSE PROCESSING
+===================================================== */
+
+function closeProcessing() {
+
+    overlay.classList.remove(
+        "show"
+    );
+
+    document.body.classList.remove(
+        "processing-active"
+    );
+
+}
+
+
+
+/* =====================================================
+   HIDE / ENCODE
+===================================================== */
+
+const hideForm =
+    document.getElementById(
+        "hideForm"
+    );
+
+
+hideForm.addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+
+        const image =
+            document.getElementById(
+                "hideImage"
+            ).files[0];
+
+
+        const message =
+            document.getElementById(
+                "message"
+            ).value.trim();
+
+
+        if (!image || !message) {
+
+            return;
+
+        }
+
+
+        const interval =
+            startProcessing("hide");
+
+
+        try {
+
+            const formData =
+                new FormData();
+
+
+            formData.append(
+                "image",
+                image
+            );
+
+
+            formData.append(
+                "message",
+                message
+            );
+
+
+            const response =
+                await fetch(
+                    "/hide",
+                    {
+                        method: "POST",
+                        body: formData
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Processing failed"
+                );
+
+            }
+
+
+            const blob =
+                await response.blob();
+
+
+            clearInterval(
+                interval
+            );
+
+
+            processingTitle.textContent =
+                "Image secured";
+
+
+            processingSubtitle.textContent =
+                "Your encoded image is ready.";
+
+
+            finishProcessing();
+
+
+            setTimeout(() => {
+
+
+                const url =
+                    window.URL.createObjectURL(
+                        blob
+                    );
+
+
+                const download =
+                    document.createElement(
+                        "a"
+                    );
+
+
+                download.href =
+                    url;
+
+
+                download.download =
+                    "stego_image.png";
+
+
+                document.body.appendChild(
+                    download
+                );
+
+
+                download.click();
+
+
+                download.remove();
+
+
+                window.URL.revokeObjectURL(
+                    url
+                );
+
+
+                setTimeout(() => {
+
+                    closeProcessing();
+
+                }, 500);
+
+
+            }, 650);
+
+
+        } catch (error) {
+
+            clearInterval(
+                interval
+            );
+
+
+            processingTitle.textContent =
+                "Processing failed";
+
+
+            processingSubtitle.textContent =
+                "Something went wrong. Please try again.";
+
+
+            setTimeout(() => {
+
+                closeProcessing();
+
+                alert(
+                    "Unable to process the image."
+                );
+
+            }, 1000);
+
+        }
+
+    }
+);
+
+
+
+/* =====================================================
+   EXTRACT / DECODE
+===================================================== */
+
+const extractForm =
+    document.getElementById(
+        "extractForm"
+    );
+
+
+extractForm.addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+
+        const image =
+            document.getElementById(
+                "extractImage"
+            ).files[0];
+
+
+        if (!image) {
+
+            return;
+
+        }
+
+
+        const interval =
+            startProcessing(
+                "extract"
+            );
+
+
+        const formData =
+            new FormData();
+
+
+        formData.append(
+            "image",
+            image
+        );
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/extract",
+                    {
+                        method: "POST",
+                        body: formData
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Extraction failed"
+                );
+
+            }
+
+
+            const text =
+                await response.text();
+
+
+            clearInterval(
+                interval
+            );
+
+
+            processingTitle.textContent =
+                "Message extracted";
+
+
+            processingSubtitle.textContent =
+                "Hidden information recovered successfully.";
+
+
+            finishProcessing();
+
+
+            setTimeout(() => {
+
+                closeProcessing();
+
+
+                const result =
+                    document.getElementById(
+                        "result"
+                    );
+
+
+                result.classList.remove(
+                    "error"
+                );
+
+
+                result.classList.add(
+                    "success"
+                );
+
+
+                result.querySelector(
+                    "strong"
+                ).textContent =
+                    "Message recovered";
+
+
+                result.querySelector(
+                    "p"
+                ).textContent =
+                    text;
+
+
+            }, 700);
+
+
+        } catch (error) {
+
+            clearInterval(
+                interval
+            );
+
+
+            closeProcessing();
+
+
+            const result =
+                document.getElementById(
+                    "result"
+                );
+
+
+            result.classList.remove(
+                "success"
+            );
+
+
+            result.classList.add(
+                "error"
+            );
+
+
+            result.querySelector(
+                "strong"
+            ).textContent =
+                "Extraction failed";
+
+
+            result.querySelector(
+                "p"
+            ).textContent =
+                "Unable to read hidden information.";
+
+        }
+
+    }
+);
+
+
+
+/* =====================================================
+   CHARACTER COUNT
+===================================================== */
+
+const messageBox =
+    document.getElementById(
+        "message"
+    );
+
+
+const charCount =
+    document.getElementById(
+        "charCount"
+    );
+
+
+messageBox.addEventListener(
+    "input",
+    () => {
+
+        charCount.textContent =
+            messageBox.value.length;
+
+    }
+);
+
+
+
+/* =====================================================
+   FILE INPUT — HIDE
+===================================================== */
+
+const hideImage =
+    document.getElementById(
+        "hideImage"
+    );
+
+
+hideImage.addEventListener(
+    "change",
+    function() {
+
+        if (!this.files.length) {
+
+            return;
+
+        }
+
+
+        const file =
+            this.files[0];
+
+
+        document.getElementById(
+            "hideFileName"
+        ).textContent =
+            file.name;
+
+
+        document.getElementById(
+            "hideFileInfo"
+        ).textContent =
+            formatFileSize(
+                file.size
+            ) + " · Image selected";
+
+
+        document.getElementById(
+            "hideUploadBox"
+        ).classList.add(
+            "selected"
+        );
+
+    }
+);
+
+
+
+/* =====================================================
+   FILE INPUT — EXTRACT
+===================================================== */
+
+const extractImage =
+    document.getElementById(
+        "extractImage"
+    );
+
+
+extractImage.addEventListener(
+    "change",
+    function() {
+
+        if (!this.files.length) {
+
+            return;
+
+        }
+
+
+        const file =
+            this.files[0];
+
+
+        document.getElementById(
+            "extractFileName"
+        ).textContent =
+            file.name;
+
+
+        document.getElementById(
+            "extractFileInfo"
+        ).textContent =
+            formatFileSize(
+                file.size
+            ) + " · Image selected";
+
+
+        document.getElementById(
+            "extractUploadBox"
+        ).classList.add(
+            "selected"
+        );
+
+    }
+);
+
+
+
+/* =====================================================
+   FILE SIZE
+===================================================== */
+
+function formatFileSize(bytes) {
+
+    if (bytes < 1024) {
+
+        return bytes + " B";
+
+    }
+
+
+    if (bytes < 1024 * 1024) {
+
+        return (
+            bytes / 1024
+        ).toFixed(1) + " KB";
+
+    }
+
+
+    return (
+        bytes / (1024 * 1024)
+    ).toFixed(1) + " MB";
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
