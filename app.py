@@ -4,37 +4,63 @@ import io
 
 app = Flask(__name__)
 
+# Prevent extremely large uploads from consuming all server memory.
+app.config["MAX_CONTENT_LENGTH"] = 20 * 1024 * 1024  # 20 MB
+
+
+END_MARKER = "###END###"
+
 
 def hide_message(image, message):
+    # Convert image to RGB
     image = image.convert("RGB")
 
-    # End marker
-    message = message + "###END###"
-    binary_message = ''.join(format(ord(char), '08b') for char in message)
+    # Add end marker
+    message = message + END_MARKER
 
-    pixels = list(image.getdata())
+    # Convert message directly to bytes
+    message_bytes = message.encode("utf-8")
 
-    if len(binary_message) > len(pixels) * 3:
-        raise ValueError("Message is too long for this image.")
+    # Convert image pixels into a compact mutable byte array.
+    # RGB image = 3 bytes per pixel.
+    pixel_data = bytearray(image.tobytes())
 
-    new_pixels = []
+    # Each byte stores one message bit.
+    required_bits = len(message_bytes) * 8
+
+    if required_bits > len(pixel_data):
+        raise ValueError(
+            "Message is too long for this image."
+        )
+
     bit_index = 0
 
-    for pixel in pixels:
-        r, g, b = pixel
-        rgb = [r, g, b]
+    for byte in message_bytes:
+        for bit in range(7, -1, -1):
+            message_bit = (byte >> bit) & 1
 
-        for i in range(3):
-            if bit_index < len(binary_message):
-                rgb[i] = (rgb[i] & 254) | int(binary_message[bit_index])
-                bit_index += 1
+            # Clear the least significant bit and insert message bit
+            pixel_data[bit_index] = (
+                pixel_data[bit_index] & 0xFE
+            ) | message_bit
 
-        new_pixels.append(tuple(rgb))
+            bit_index += 1
 
-    image.putdata(new_pixels)
+    # Create the modified image
+    encoded_image = Image.frombytes(
+        "RGB",
+        image.size,
+        bytes(pixel_data)
+    )
 
     output = io.BytesIO()
-    image.save(output, format="PNG")
+
+    encoded_image.save(
+        output,
+        format="PNG",
+        optimize=True
+    )
+
     output.seek(0)
 
     return output
@@ -43,25 +69,42 @@ def hide_message(image, message):
 def extract_message(image):
     image = image.convert("RGB")
 
-    binary = ""
+    pixel_data = image.tobytes()
 
-    for pixel in image.getdata():
-        for value in pixel:
-            binary += str(value & 1)
+    message_bytes = bytearray()
 
-    message = ""
+    current_byte = 0
+    bit_count = 0
 
-    for i in range(0, len(binary), 8):
-        byte = binary[i:i + 8]
+    for value in pixel_data:
 
-        if len(byte) < 8:
-            break
+        # Read LSB
+        current_byte = (
+            current_byte << 1
+        ) | (value & 1)
 
-        char = chr(int(byte, 2))
-        message += char
+        bit_count += 1
 
-        if message.endswith("###END###"):
-            return message[:-9]
+        if bit_count == 8:
+
+            message_bytes.append(current_byte)
+
+            # Check for end marker without creating
+            # a huge binary string.
+            if message_bytes.endswith(
+                END_MARKER.encode("utf-8")
+            ):
+                result = message_bytes[
+                    :-len(END_MARKER)
+                ]
+
+                return result.decode(
+                    "utf-8",
+                    errors="replace"
+                )
+
+            current_byte = 0
+            bit_count = 0
 
     return "No hidden message found."
 
@@ -74,12 +117,27 @@ def index():
 @app.route("/hide", methods=["POST"])
 def hide():
     try:
-        image_file = request.files["image"]
-        message = request.form["message"]
+        if "image" not in request.files:
+            return "No image uploaded.", 400
 
+        image_file = request.files["image"]
+
+        if not image_file.filename:
+            return "No image selected.", 400
+
+        message = request.form.get("message", "").strip()
+
+        if not message:
+            return "Message cannot be empty.", 400
+
+        # Open uploaded image
         image = Image.open(image_file)
 
-        output = hide_message(image, message)
+        # Process image
+        output = hide_message(
+            image,
+            message
+        )
 
         return send_file(
             output,
@@ -89,13 +147,20 @@ def hide():
         )
 
     except Exception as e:
+        print("HIDE ERROR:", repr(e))
         return f"Error: {str(e)}", 400
 
 
 @app.route("/extract", methods=["POST"])
 def extract():
     try:
+        if "image" not in request.files:
+            return "No image uploaded.", 400
+
         image_file = request.files["image"]
+
+        if not image_file.filename:
+            return "No image selected.", 400
 
         image = Image.open(image_file)
 
@@ -104,8 +169,13 @@ def extract():
         return message
 
     except Exception as e:
+        print("EXTRACT ERROR:", repr(e))
         return f"Error: {str(e)}", 400
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(
+        host="0.0.0.0",
+        port=5000,
+        debug=True
+    )
